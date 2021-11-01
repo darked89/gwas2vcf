@@ -52,10 +52,26 @@ def test_check_reference_allele():
 def test_pvalues_precision_with_PvalueHandler():
     p_value_handler = PvalueHandler()
     p_value_strings = ['0.1','0.00000000005','7.5E-8','8e-1000','0.1E-10000']
-    gwas_list = []
-    for p_value_string in p_value_strings:
-        gwas_list.append ( Gwas('test', 1, 'A', 'T', None, None, p_value_handler.neg_log_of_decimal (p_value_handler.parse_string(p_value_string)),
-                                None, None, None, None, None, None) )
+    gwas_list = [
+        Gwas(
+            'test',
+            1,
+            'A',
+            'T',
+            None,
+            None,
+            p_value_handler.neg_log_of_decimal(
+                p_value_handler.parse_string(p_value_string)
+            ),
+            None,
+            None,
+            None,
+            None,
+            None,
+            None,
+        )
+        for p_value_string in p_value_strings
+    ]
 
     #show that we get the number we expect when converted to a float
     assert gwas_list[0].nlog_pval == float(-decimal.Decimal(p_value_strings[0]).log10())
