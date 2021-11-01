@@ -161,7 +161,7 @@ class Gwas:
             'SwitchedAlleles': 0,
             'NormalisedVariants': 0
         }
-        file_idx = dict()
+        file_idx = {}
         filename, file_extension = os.path.splitext(path)
 
         if file_extension == '.gz':
@@ -187,11 +187,8 @@ class Gwas:
             logging.debug("Input row: {}".format(s))
 
             try:
-                if alias is not None:
-                    if s[chrom_field] in alias:
-                        chrom = alias[s[chrom_field]]
-                    else:
-                        chrom = s[chrom_field]
+                if alias is not None and s[chrom_field] in alias:
+                    chrom = alias[s[chrom_field]]
                 else:
                     chrom = s[chrom_field]
             except Exception as e:

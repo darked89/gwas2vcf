@@ -86,15 +86,13 @@ def main():
         vars(args)['cohort_controls'] = j['cohort_controls']
 
     # check values are valid
-    if args.cohort_cases is not None:
-        if args.cohort_cases < 1:
-            logging.error("Total study number of cases must be a positive number")
-            sys.exit()
+    if args.cohort_cases is not None and args.cohort_cases < 1:
+        logging.error("Total study number of cases must be a positive number")
+        sys.exit()
 
-    if args.cohort_controls is not None:
-        if args.cohort_controls < 1:
-            logging.error("Total study number of controls must be a positive number")
-            sys.exit()
+    if args.cohort_controls is not None and args.cohort_controls < 1:
+        logging.error("Total study number of controls must be a positive number")
+        sys.exit()
 
     if not os.path.isfile(args.data):
         logging.error("{} file does not exist".format(args.data))
@@ -108,11 +106,7 @@ def main():
         logging.error("{} output directory does not exist".format(args.out))
         sys.exit()
 
-    if args.dbsnp is not None:
-        dbsnp = pysam.VariantFile(args.dbsnp)
-    else:
-        dbsnp = None
-
+    dbsnp = pysam.VariantFile(args.dbsnp) if args.dbsnp is not None else None
     if args.alias is not None:
         alias = {}
         with open(args.alias) as f:

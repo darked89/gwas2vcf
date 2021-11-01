@@ -19,13 +19,13 @@ class Vcf:
 
     @staticmethod
     def is_float32_lossy(f):
-        if f == 0 or f == -0 or f is None or f == np.inf or f == -np.inf:
+        if f == 0 or f is None or f == np.inf or f == -np.inf:
             return False
 
         # convert val to float32
         v = np.float32(f)
 
-        return v == 0 or v == np.inf or v == -0 or v == -np.inf
+        return v in [0, np.inf, 0, -np.inf]
 
     @staticmethod
     def remove_illegal_chars(s):
@@ -92,9 +92,7 @@ class Vcf:
         # SAMPLES
         header.samples.add(trait_id)
         if file_metadata is not None:
-            s = ""
-            for k in sample_metadata:
-                s += ",{}={}".format(k, sample_metadata[k])
+            s = "".join(",{}={}".format(k, sample_metadata[k]) for k in sample_metadata)
             header.add_line('##SAMPLE=<ID={}{}>'.format(trait_id, s))
 
         # CONTIG
